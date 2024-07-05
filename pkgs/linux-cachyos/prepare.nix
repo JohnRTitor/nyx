@@ -50,12 +50,7 @@ let
   patches =
     [ "${patches-src}/${majorMinor}/all/0001-cachyos-base-all.patch" ]
     ++ schedPatches
-    ++ lib.optional (cachyConfig.cpuSched == "hardened") "${patches-src}/${majorMinor}/misc/0001-hardened.patch"
-    ++ (if majorMinor == "6.9" then [ ./0001-Add-extra-version-CachyOS.patch ]
-    else if cachyConfig.taste == "linux-cachyos-rc" then [ ./0001-Add-extra-version-CachyOS-rc.patch ] else [
-      # FIXME: remove in next kernel update
-      "${patches-src}/${majorMinor}/misc/0001-Add-extra-version-CachyOS.patch"
-    ]);
+    ++ lib.optional (cachyConfig.cpuSched == "hardened") "${patches-src}/${majorMinor}/misc/0001-hardened.patch";
 
 
   # There are some configurations set by the PKGBUILD
@@ -220,6 +215,10 @@ stdenv.mkDerivation {
   inherit src patches;
   name = "linux-cachyos-config";
   nativeBuildInputs = kernel.nativeBuildInputs ++ kernel.buildInputs;
+
+  postPatch = ''
+    sed -i '/^EXTRAVERSION =/ s/$/-cachyos/' $src/Makefile
+  '';
 
   buildPhase = ''
     cp "${config-src}/${cachyConfig.taste}/config" ".config"
