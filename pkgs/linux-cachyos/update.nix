@@ -35,7 +35,7 @@ writeShellScript "update-cachyos" ''
     local ver=$1
     local url=$2
 
-    local hash_sha256=$(nix-prefetch-url --type sha256 $url)
+    local hash_sha256=$(nix-prefetch-url --unpack --type sha256 $url)
     local hash_sri=$(nix-hash --to-sri --type sha256 $hash_sha256)
     echo $hash_sri
   }
