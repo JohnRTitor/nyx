@@ -1,6 +1,6 @@
 { cachyConfig
 , fetchFromGitHub
-, fetchurl
+, fetchzip
 , lib
 , stdenv
 , kernel
@@ -24,13 +24,13 @@ let
 
   src =
     if cachyConfig.taste == "linux-cachyos-rc" then
-      fetchurl
+      fetchzip
         {
           url = "https://git.kernel.org/torvalds/t/linux-${version}.tar.gz";
           inherit (cachyConfig.versions.linux) hash;
         }
     else
-      fetchurl {
+      fetchzip {
         url = "mirror://kernel/linux/kernel/v${lib.versions.major version}.x/linux-${
           if version == "${majorMinor}.0" then majorMinor else version
         }.tar.xz";
