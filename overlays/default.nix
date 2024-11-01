@@ -91,7 +91,7 @@ in
 
   beautyline-icons = final.callPackage ../pkgs/beautyline-icons { };
 
-  bpftools_full = final.callPackage ../pkgs/scx/bpftools-full.nix { };
+  bpftools_full = final.callPackage ../pkgs/bpftools-full { };
 
   busybox_appletless = multiOverride
     prev.busybox
